@@ -1,10 +1,40 @@
 import React, { useState } from "react";
+import TasksList from "./TasksList";
 
-const TasksPage = () => {
+const TASK_STATUSES = ["Unstarted", "In Progress", "Completed"];
+
+const TasksPage = props => {
   const [cardForm, showCardForm] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const changeTitle = e => {
+    setTitle(e.target.value);
+  };
+
+  const changeDescription = e => {
+    setDescription(e.target.value);
+  };
 
   const formToggler = () => {
     showCardForm(!cardForm);
+  };
+
+  const renderTasksList = () => {
+    const { tasks } = props;
+    return TASK_STATUSES.map((status, id) => {
+      const statusTasks = tasks.filter(task => task.status === status);
+      return (
+        <div className="col-md-3 card m-2 p-0" key={id}>
+          <TasksList
+            key={status}
+            status={status}
+            tasks={statusTasks}
+            onStatusChange={props.onStatusChange}
+          />
+        </div>
+      );
+    });
   };
 
   return (
@@ -30,6 +60,7 @@ const TasksPage = () => {
                 type="text"
                 className="form-control"
                 placeholder="Task Title"
+                onChange={changeTitle}
               />
             </div>
             <div className="form-group">
@@ -37,6 +68,7 @@ const TasksPage = () => {
                 type="text"
                 className="form-control"
                 placeholder="Task Description"
+                onChange={changeDescription}
               />
             </div>
             <buton type="submit" className="btn btn-primary">
@@ -44,6 +76,12 @@ const TasksPage = () => {
             </buton>
           </form>
         )}
+      </div>
+      <div
+        className="row d-flex justify-content-center position-relative"
+        style={{ background: "#e9ecef" }}
+      >
+        {renderTasksList()}
       </div>
     </div>
   );
