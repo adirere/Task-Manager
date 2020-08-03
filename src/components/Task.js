@@ -1,4 +1,6 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const TASK_STATUSES = ["Unstarted", "In Progress", "Completed"];
 
@@ -27,6 +29,12 @@ const Task = props => {
       <p className="card-text mb-3 text-muted font-weight-bold px-2">
         {props.task.description}
       </p>
+      <FontAwesomeIcon
+        icon={faTrash}
+        className="float-right m-5"
+        style={{ color: "tomato", cursor: "pointer" }}
+        onClick={() => props.onRemoveTask(props.task.id)}
+      />
     </>
   );
 };

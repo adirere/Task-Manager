@@ -20,6 +20,19 @@ const TasksPage = props => {
     showCardForm(!cardForm);
   };
 
+  const resetForm = () => {
+    setTitle("");
+    setDescription("");
+    showCardForm(false);
+  };
+
+  const onCreateTask = e => {
+    console.log("fired");
+    e.preventDefault();
+    props.onCreateTask({ title, description });
+    resetForm();
+  };
+
   const renderTasksList = () => {
     const { tasks } = props;
     return TASK_STATUSES.map((status, id) => {
@@ -31,6 +44,7 @@ const TasksPage = props => {
             status={status}
             tasks={statusTasks}
             onStatusChange={props.onStatusChange}
+            onRemoveTask={props.onRemoveTask}
           />
         </div>
       );
@@ -54,7 +68,7 @@ const TasksPage = props => {
         </div>
         {/* {input form} */}
         {cardForm && (
-          <form>
+          <form onSubmit={onCreateTask}>
             <div className="form-group">
               <input
                 type="text"
@@ -71,9 +85,9 @@ const TasksPage = props => {
                 onChange={changeDescription}
               />
             </div>
-            <buton type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary">
               Submit
-            </buton>
+            </button>
           </form>
         )}
       </div>

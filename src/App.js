@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { editTask } from "./actions";
+import { editTask, createTask, removeTask } from "./actions";
 import TasksPage from "./components/TasksPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles.css";
@@ -10,7 +10,22 @@ function App(props) {
     props.dispatch(editTask(id, { status }));
   };
 
-  return <TasksPage tasks={props.tasks} onStatusChange={onStatusChange} />;
+  const onCreateTask = ({ title, description }) => {
+    props.dispatch(createTask({ title, description }));
+  };
+
+  const onRemoveTask = id => {
+    props.dispatch(removeTask(id));
+  };
+
+  return (
+    <TasksPage
+      tasks={props.tasks}
+      onStatusChange={onStatusChange}
+      onCreateTask={onCreateTask}
+      onRemoveTask={onRemoveTask}
+    />
+  );
 }
 
 const mapStateToProps = state => {
